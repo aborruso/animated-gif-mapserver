@@ -21,7 +21,7 @@ Moreover it can use [run-time substitution](https://mapserver.org/cgi/runsub.htm
 
 Then I can use it to create a `PNG` output file for every year, and then to process these and create an animated `GIF`.
 
-To use MapServer it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic styles to apply, etc..
+To use MapServer it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic styles to apply, etc..<br>
 I will not explain here what the syntax is, it is not the purpose of this repository, I'll just make a few comments.
 
 Some points for the [example map file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.map) I have created:
