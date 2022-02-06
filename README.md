@@ -27,9 +27,10 @@ Some points for the [example map file](https://github.com/aborruso/animated-gif-
 
 - I have set a decimal degrees [bounding box](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.map#L7) ([EPSG:4326)](https://epsg.io/4326);
 - the coordinate reference system (CRS) of the output is again "latitude, longitude", but it is possible to set the CRS you want;
-- I have used 2 layers:
+- I have used 3 layers:
     - one to have a backgroud map, the polygons of [Natural Earh `Admin 0 – Countries` layer](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/), low resolution, used to create an example;
-    - the [data layer](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.txt), a 3 fields `CSV` (`decimalLatitude`, `decimalLongitude` and `year`)
+    - the [data layer](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.txt), a 3 fields `CSV` (`decimalLatitude`, `decimalLongitude` and `year`);
+    - the layer used to add the year as a label;
 - I have set 2 styles for data layer, the red dots for the specified year and the blu dots the previous years. The definition is by variable, passed at run-time via cli (`EXPRESSION ("[year]" < '%year%')`).
 
 The data layer, is defined as [GDAL/OGR virtual layer](https://gdal.org/drivers/vector/vrt.html), that is one of Mapserver input formats. It's based on a [XML definition file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.vrt), to map CSV coordinates fields (and some other metadata).
@@ -47,6 +48,14 @@ for i in {1975..2000}; do
   mapserv -nh "QUERY_STRING=map=data.map&mode=map&year=${i}" >${i}.png
 done
 ```
+
+To add for each year, the year as label, I have added this in the query (`labelyear` is the name that I use to add labels to the PNG output):
+
+```
+&map_layer[labelyear]=FEATURE+POINTS+300+-560+END+TEXT+"1977"+END
+```
+
+It's possible to do it, because in MapServer you can [change map file parameters via URL](https://mapserver.org/cgi/controls.html#changing-map-file-parameters-via-a-form-or-a-url).
 
 ## The bash script
 
@@ -70,73 +79,4 @@ I have created a [bash script](https://github.com/aborruso/animated-gif-mapserve
           <Field name="year" src="year" type="integer"/>
      </OGRVRTLayer>
 </OGRVRTDataSource>
-```
-
-
-## The map file
-
-```
-MAP
-    NAME "Robert is great"
-    STATUS ON
-# the output size in pixel
-    SIZE 600 600
-# the bounding box in decimal degrees
-    EXTENT 133.50282 -45.29796 156.30504 -13.83750
-# the unit of measure of the coordinates
-    UNITS DD
-# the path of the input layers
-    SHAPEPATH "./"
-# the background coloe
-    IMAGECOLOR 255 255 255
-# the file where the symbols are defined
-    SYMBOLSET  "./symbol.txt"
-
-    LAYER
-    NAME 'countries'
-    TYPE POLYGON
-    CONNECTIONTYPE OGR
-    CONNECTION "ne_110m_admin_0_countries.shp"
-    STATUS DEFAULT
-        CLASS
-        NAME "countries"
-        STYLE
-            COLOR "#EEE8AA"
-            OUTLINECOLOR "#999999"
-            WIDTH .5
-        END
-        END
-    END # LAYER
-
-    LAYER
-    NAME 'data'
-    TYPE POINT
-    CONNECTIONTYPE OGR
-    CONNECTION "data.vrt"
-    VALIDATION
-        'year' '^[0-9]{4}$'
-        'default_year' '1976'
-    END
-    STATUS DEFAULT
-        CLASS
-            NAME "Passed"
-            EXPRESSION ([year] < %year%)
-            STYLE
-            SYMBOL "circlef"
-            COLOR 0 0 255
-            SIZE 4
-            END # STYLE
-        END # CLASS
-        CLASS
-            NAME "Current"
-            EXPRESSION ([year] = %year%)
-            STYLE
-            SYMBOL "circlef"
-            COLOR 255 0 0
-            SIZE 6
-            END # STYLE
-        END # CLASS
-    END # LAYER
-
-END # MAP
 ```
