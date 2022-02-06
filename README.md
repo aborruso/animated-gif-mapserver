@@ -120,7 +120,7 @@ MAP
     STATUS DEFAULT
         CLASS
             NAME "Passed"
-            EXPRESSION ("[year]" < '%year%')
+            EXPRESSION ([year] < %year%)
             STYLE
             SYMBOL "circlef"
             COLOR 0 0 255
@@ -129,7 +129,7 @@ MAP
         END # CLASS
         CLASS
             NAME "Current"
-            EXPRESSION ("[year]" = '%year%')
+            EXPRESSION ([year] = %year%)
             STYLE
             SYMBOL "circlef"
             COLOR 255 0 0
