@@ -18,9 +18,9 @@ The data are points, and in the desired output the red points are those of the s
 
 It has a cli - [`mapserv`](https://mapserver.org/cgi/mapserv.html#mapserv) - that you can use to create ouputs.<br>Moreover it can use [run-time substitution](https://mapserver.org/cgi/runsub.html) to change variables values at run-rine.
 
-Then I can use it to create a `PNG` output for every year, and then to process these and create an animated `GIF`.
+Then I can use it to create a `PNG` output file for every year, and then to process these and create an animated `GIF`.
 
-To use Mapserver it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic style to apply, etc..<br>
+To use Mapserver it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic styles to apply, etc..<br>
 I will not explain here what the syntax is, it is not the purpose of this repository, I'll just make a few comments.
 
 Some points for the [example map file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.map) I have created:
@@ -30,11 +30,11 @@ Some points for the [example map file](https://github.com/aborruso/animated-gif-
 - I have used 2 layers:
     - one to have a backgroud map, the polygons of [Natural Earh `Admin 0 – Countries` layer](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/), low resolution, used to create an example;
     - the [data layer](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.txt), a 3 fields `CSV` (`decimalLatitude`, `decimalLongitude` and `year`)
-  - I have set 2 styles for data layer, the red dots for the specified year and the blu dots the previous years. The definition is by variable, passed at run-time via cli (`EXPRESSION ("[year]" < '%year%')`).
+- I have set 2 styles for data layer, the red dots for the specified year and the blu dots the previous years. The definition is by variable, passed at run-time via cli (`EXPRESSION ("[year]" < '%year%')`).
 
 The data layer, is defined as [GDAL/OGR virtual layer](https://gdal.org/drivers/vector/vrt.html), that is one of Mapserver input formats. It's based on a [XML definition file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.vrt), to map CSV coordinates fields (and some other metadata).
 
-Then to create a PNG, just create a loop and for each year, run something like:
+Then to create a PNG, just run something like:
 
 ```bash
 mapserv -nh "QUERY_STRING=map=data.map&mode=map&year=1977" >1977.png
