@@ -1,8 +1,8 @@
 # Create an animated gif of cartographic data via command line, using Mapserver
 
-A person I respect very much, has written to me an email in which he asks to me how to create an animated gif of cartographic data or the simple and convenient ways typical of the command line.
+A person I respect very much, has written to me an email in which he asks to me how to create an animated gif of cartographic data, using the simple and convenient ways typical of the command line.
 
-Several ways to it, here is the [**Mapserver**](https://mapserver.org/) solution.
+Several ways to do it, here is the [**Mapserver**](https://mapserver.org/) solution.
 
 ## The goal
 
