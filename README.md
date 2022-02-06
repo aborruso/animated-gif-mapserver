@@ -16,11 +16,12 @@ The data are points, and in the desired output the red points are those of the s
 
 > MapServer is an [Open Source](https://opensource.org/) platform for publishing spatial data and interactive mapping applications to the web. Originally developed in the mid-1990’s at the University of Minnesota, MapServer is released under an [MIT-style license](https://mapserver.org//copyright.html#license), and runs on all major platforms ([Windows](https://mapserver.org//download.html#windows), [Linux](https://mapserver.org//download.html#linux), [Mac OS X](https://mapserver.org//download.html#osx)).
 
-It has a cli - [`mapserv`](https://mapserver.org/cgi/mapserv.html#mapserv) - that you can use to create ouputs.<br>Moreover it can use [run-time substitution](https://mapserver.org/cgi/runsub.html) to change variables values at run-rine.
+It has a cli - [`mapserv`](https://mapserver.org/cgi/mapserv.html#mapserv) - that you can use to create ouputs.
+Moreover it can use [run-time substitution](https://mapserver.org/cgi/runsub.html) to change variables values at run-time.
 
 Then I can use it to create a `PNG` output file for every year, and then to process these and create an animated `GIF`.
 
-To use Mapserver it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic styles to apply, etc..<br>
+To use MapServer it's necessary to create a `map file`, a configuration file in which set the geographical bounding box, the input layers you want to use, the graphic styles to apply, etc..
 I will not explain here what the syntax is, it is not the purpose of this repository, I'll just make a few comments.
 
 Some points for the [example map file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.map) I have created:
@@ -28,12 +29,12 @@ Some points for the [example map file](https://github.com/aborruso/animated-gif-
 - I have set a decimal degrees [bounding box](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.map#L7) ([EPSG:4326)](https://epsg.io/4326);
 - the coordinate reference system (CRS) of the output is again "latitude, longitude", but it is possible to set the CRS you want;
 - I have used 3 layers:
-    - one to have a backgroud map, the polygons of [Natural Earh `Admin 0 – Countries` layer](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/), low resolution, used to create an example;
-    - the [data layer](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.txt), a 3 fields `CSV` (`decimalLatitude`, `decimalLongitude` and `year`);
-    - the layer used to add the year as a label;
-- I have set 2 styles for data layer, the red dots for the specified year and the blu dots the previous years. The definition is by variable, passed at run-time via cli (`EXPRESSION ("[year]" < '%year%')`).
+  - one to have a background map, the polygons of [Natural Earh `Admin 0 – Countries` layer](https://www.naturalearthdata.com/downloads/110m-cultural-vectors/), low resolution, used to create an example;
+  - the [data layer](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.txt), a 3 fields `CSV` (`decimalLatitude`, `decimalLongitude` and `year`);
+  - the layer used to add the year as a label;
+- I have set 2 styles for data layer, the red dots for the specified year and the blue dots the previous years. The definition is by variable, passed at run-time via cli (`EXPRESSION ("[year]" < '%year%')`).
 
-The data layer, is defined as [GDAL/OGR virtual layer](https://gdal.org/drivers/vector/vrt.html), that is one of Mapserver input formats. It's based on a [XML definition file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.vrt), to map CSV coordinates fields (and some other metadata).
+The data layer, is defined as [GDAL/OGR virtual layer](https://gdal.org/drivers/vector/vrt.html), that is one of MapServer input formats. It's based on a [XML definition file](https://github.com/aborruso/animated-gif-mapserver/blob/main/processing/data.vrt), to map CSV coordinates fields (and some other metadata).
 
 Then to create a PNG, just run something like:
 
@@ -62,7 +63,7 @@ It's possible to do it, because in MapServer you can [change map file parameters
 I have created a [bash script](https://github.com/aborruso/animated-gif-mapserver/blob/main/myDearRobert.sh) to run all:
 
 - first of all it downloads the data layer and extract `decimalLatitude`, `decimalLongitude` and `year`;
-- then it creates a PNG for every year, using Mapserver cli;
+- then it creates a PNG for every year, using MapServer cli;
 - then it creates the below animated GIF using [`convert` ImageMagick](https://imagemagick.org/script/convert.php) utility.
 
 ![](animation.gif)
