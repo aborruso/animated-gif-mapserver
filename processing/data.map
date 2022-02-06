@@ -1,0 +1,63 @@
+MAP
+    NAME "Robert is great"
+    STATUS ON
+# the output size in pixel
+    SIZE 600 600
+# the bounding box in decimal degrees
+    EXTENT 133.50282 -45.29796 156.30504 -13.83750
+# the unit of measure of the coordinates
+    UNITS DD
+# the path of the input layers
+    SHAPEPATH "./"
+# the background coloe
+    IMAGECOLOR 255 255 255
+# the file where the symbols are defined
+    SYMBOLSET  "./symbol.txt"
+
+    LAYER
+    NAME 'countries'
+    TYPE POLYGON
+    CONNECTIONTYPE OGR
+    CONNECTION "ne_110m_admin_0_countries.shp"
+    STATUS DEFAULT
+        CLASS
+        NAME "countries"
+        STYLE
+            COLOR "#EEE8AA"
+            OUTLINECOLOR "#999999"
+            WIDTH .5
+        END
+        END
+    END # LAYER
+
+    LAYER
+    NAME 'data'
+    TYPE POINT
+    CONNECTIONTYPE OGR
+    CONNECTION "data.vrt"
+    VALIDATION
+        'year' '^[0-9]{4}$'
+        'default_year' '1976'
+    END
+    STATUS DEFAULT
+        CLASS
+            NAME "Passed"
+            EXPRESSION ("[year]" < '%year%')
+            STYLE
+            SYMBOL "circlef"
+            COLOR 0 0 255
+            SIZE 4
+            END # STYLE
+        END # CLASS
+        CLASS
+            NAME "Current"
+            EXPRESSION ("[year]" = '%year%')
+            STYLE
+            SYMBOL "circlef"
+            COLOR 255 0 0
+            SIZE 6
+            END # STYLE
+        END # CLASS
+    END # LAYER
+
+END # MAP

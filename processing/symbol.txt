@@ -1,0 +1,10 @@
+SYMBOLSET 
+SYMBOL
+  NAME "circlef"
+  TYPE ellipse
+  FILLED true
+  POINTS
+    10 10
+  END # POINTS
+END # SYMBOL
+END
