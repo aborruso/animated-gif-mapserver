@@ -4,7 +4,7 @@ MAP
 # the output size in pixel
     SIZE 600 600
 # the bounding box in decimal degrees
-    EXTENT 133.50282 -45.29796 156.30504 -13.83750
+    EXTENT 143.49090 -44.02989 149.01266 -39.20236
 # the unit of measure of the coordinates
     UNITS DD
 # the path of the input layers
